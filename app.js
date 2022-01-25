@@ -34,26 +34,7 @@ const operators = $('.operator').toArray();
 for (let i = 0; i < operators.length; i++) {
   operators[i].addEventListener('click', () => {
     //If operator already is last, replace
-    if ($('#sumInp').text() !== '') {
-      let num = $('#sumInp').text();
-      if (num[num.length - 1].match(/[^0-9()π]/)) {
-        num = num.slice(0, -1);
-        $('#sumInp').text(num);
-        //Remove last from array
-        total = total.slice(0, -1);
-      }
-    }
-    //If negativ numbers
-    if ($('#sumInp').text() === '' && operators[i].innerHTML === '-') {
-      $('#sumInp').text($('#sumInp').text() + operators[i].innerHTML);
-      //Save to array
-      total.push(operators[i].innerHTML);
-      //Else if regular math
-    } else if ($('#sumInp').text() !== '') {
-      $('#sumInp').text($('#sumInp').text() + operators[i].innerHTML);
-      //Save to array
-      total.push(operators[i].innerHTML);
-    }
+    addOpe(operators[i].innerHTML);
   });
 }
 
@@ -61,24 +42,12 @@ for (let i = 0; i < operators.length; i++) {
 const specials = $('.special').toArray();
 for (let i = 0; i < specials.length; i++) {
   specials[i].addEventListener('click', () => {
-    if ($('#sumInp').text() !== '') {
-      let num = $('#sumInp').text();
-      if (num[num.length - 1].match(/[^0-9/+*-]/)) {
-        num = num.slice(0, -1);
-        $('#sumInp').text(num);
-        //Remove last from array
-        total = total.slice(0, -1);
-      }
-    }
-    $('#sumInp').text($('#sumInp').text() + specials[i].innerHTML);
-    total.push(specials[i].innerHTML);
+    addSpec(specials[i].innerHTML);
   });
 }
 //Add 'pi' to sum onclick
 $('.pi').on('click', () => {
-  $('#sumInp').text($('#sumInp').text() + $('.pi').text());
-  total.push('3.141592653589793');
-  console.log(total);
+  addPi();
 });
 
 //Return 'total' onclick
@@ -176,6 +145,22 @@ function controllKey(key) {
     case 127:
       clearField();
       break;
+    // (
+    case 40:
+      addSpec('(');
+      break;
+    // )
+    case 41:
+      addSpec(')');
+      break;
+    // %
+    case 37:
+      addOpe('%');
+      break;
+    // PI
+    case 960:
+      addPi();
+      break;
   }
 }
 
@@ -195,7 +180,7 @@ function addOpe(a) {
   //If operator already is last, replace
   if ($('#sumInp').text() !== '') {
     let num = $('#sumInp').text();
-    if (num[num.length - 1].match(/[^0-9]/)) {
+    if (num[num.length - 1].match(/[^0-9()π]/)) {
       num = num.slice(0, -1);
       $('#sumInp').text(num);
       //Remove last from array
@@ -213,6 +198,27 @@ function addOpe(a) {
     //Save to array
     total.push(a);
   }
+}
+
+//Add specials
+function addSpec(a) {
+  if ($('#sumInp').text() !== '') {
+    let num = $('#sumInp').text();
+    if (num[num.length - 1].match(/[^0-9/+*-]/)) {
+      num = num.slice(0, -1);
+      $('#sumInp').text(num);
+      //Remove last from array
+      total = total.slice(0, -1);
+    }
+  }
+  $('#sumInp').text($('#sumInp').text() + a);
+  total.push(a);
+}
+
+//add pi
+function addPi() {
+  $('#sumInp').text($('#sumInp').text() + $('.pi').text());
+  total.push('3.141592653589793');
 }
 
 //Calculate
