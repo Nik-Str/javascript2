@@ -36,7 +36,7 @@ for (let i = 0; i < operators.length; i++) {
     //If operator already is last, replace
     if ($('#sumInp').text() !== '') {
       let num = $('#sumInp').text();
-      if (num[num.length - 1].match(/[^0-9]/)) {
+      if (num[num.length - 1].match(/[^0-9()π]/)) {
         num = num.slice(0, -1);
         $('#sumInp').text(num);
         //Remove last from array
@@ -56,6 +56,30 @@ for (let i = 0; i < operators.length; i++) {
     }
   });
 }
+
+//Add 'special' to sum onclick
+const specials = $('.special').toArray();
+for (let i = 0; i < specials.length; i++) {
+  specials[i].addEventListener('click', () => {
+    if ($('#sumInp').text() !== '') {
+      let num = $('#sumInp').text();
+      if (num[num.length - 1].match(/[^0-9/+*-]/)) {
+        num = num.slice(0, -1);
+        $('#sumInp').text(num);
+        //Remove last from array
+        total = total.slice(0, -1);
+      }
+    }
+    $('#sumInp').text($('#sumInp').text() + specials[i].innerHTML);
+    total.push(specials[i].innerHTML);
+  });
+}
+//Add 'pi' to sum onclick
+$('.pi').on('click', () => {
+  $('#sumInp').text($('#sumInp').text() + $('.pi').text());
+  total.push('3.141592653589793');
+  console.log(total);
+});
 
 //Return 'total' onclick
 $('#total').on('click', () => {
@@ -196,7 +220,7 @@ function calculate() {
   try {
     let num = $('#sumInp').text();
 
-    if (num[num.length - 1].match(/[^0-9]/)) {
+    if (num[num.length - 1].match(/[^0-9π)]/)) {
       num = num.slice(0, -1);
       $('#sumInp').text(num);
       //Remove last from array
