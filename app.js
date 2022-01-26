@@ -76,90 +76,112 @@ function controllKey(key) {
     // 0
     case 48:
       addNum('0');
+      pressed('#zero');
       break;
     // 1
     case 49:
       addNum('1');
+      pressed('#one');
       break;
     // 2
     case 50:
       addNum('2');
+      pressed('#two');
       break;
     // 3
     case 51:
       addNum('3');
+      pressed('#three');
       break;
     // 4
     case 52:
       addNum('4');
+      pressed('#four');
       break;
     // 5
     case 53:
       addNum('5');
+      pressed('#five');
       break;
     // 6
     case 54:
       addNum('6');
+      pressed('#six');
       break;
     // 7
     case 55:
       addNum('7');
+      pressed('#seven');
       break;
     // 8
     case 56:
       addNum('8');
+      pressed('#eight');
       break;
     // 9
     case 57:
       addNum('9');
+      pressed('#nine');
       break;
     // .
     case 46:
       addOpe('.');
+      pressed('#dot');
       break;
     // +
     case 43:
       addOpe('+');
+      pressed('#addition');
       break;
     // *
     case 42:
       addOpe('*');
+      pressed('#multiplication');
       break;
     // /
     case 47:
       addOpe('/');
+      pressed('#division');
       break;
     // -
     case 45:
       addOpe('-');
+      pressed('#subtraction');
       break;
     // Enter
     case 13:
       calculate();
+      pressed('#total');
       break;
     // BackSpace 'c'
     case 8:
       removeLast();
+      pressed('#c');
       break;
     // Delete 'ac'
     case 127:
       clearField();
+      pressed('#ac');
       break;
     // (
     case 40:
       addSpec('(');
+      pressed('#parR');
       break;
     // )
     case 41:
       addSpec(')');
+      pressed('#parL');
       break;
     // %
     case 37:
       addOpe('%');
+      pressed('#modulus');
       break;
     // PI
     case 960:
       addPi();
+      pressed('#pi');
       break;
   }
 }
@@ -217,8 +239,10 @@ function addSpec(a) {
 
 //add pi
 function addPi() {
-  $('#sumInp').text($('#sumInp').text() + $('.pi').text());
-  total.push('3.141592653589793');
+  if (total[total.length - 1] !== '3.141592653589793') {
+    $('#sumInp').text($('#sumInp').text() + $('.pi').text());
+    total.push('3.141592653589793');
+  }
 }
 
 //Calculate
@@ -284,4 +308,14 @@ function controll() {
     //Clear array
     total = [];
   }
+}
+
+//Press effekt using keys
+function pressed(a) {
+  //Add style onClick
+  $(a).addClass('pressed');
+  //Remove style
+  setTimeout(() => {
+    $(a).removeClass('pressed');
+  }, 100);
 }
